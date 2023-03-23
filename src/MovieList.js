@@ -4,6 +4,7 @@ import { Movie } from "./Movie";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from "react-router-dom";
+import { API } from "./global";
 
 export function MovieList() {
 
@@ -11,14 +12,14 @@ export function MovieList() {
 
 
   const getMovies = () => {
-    fetch(`https://638af1ba7220b45d22850b2c.mockapi.io/movies`, { method: "GET" })
+    fetch(`${API}/movies`, { method: "GET" })
       .then((data) => data.json())
       .then((movies) => setMovieList(movies))
   }
   useEffect(() => getMovies(), []);
 
   const deleteMovie = (id) => {
-    fetch(`https://638af1ba7220b45d22850b2c.mockapi.io/movies/${id}`, { method: "DELETE" })
+    fetch(`${API}/movies/${id}`, { method: "DELETE" })
       .then((data) => getMovies())
   };
 

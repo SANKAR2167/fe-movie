@@ -12,6 +12,7 @@ import { Home } from './Home';
 import { NotFound } from './NotFound';
 import { LoginForm } from './LoginForm';
 import { EditMovie } from './EditMovie';
+import { API } from './global';
 
 // const INITIAL_MOVIE_LIST = [
 //   {
@@ -120,7 +121,7 @@ function App() {
   });
 
   useEffect(() => {
-    fetch(`https://638af1ba7220b45d22850b2c.mockapi.io/movies`, { method: "GET" })
+    fetch(`${API}/movies`, { method: "GET" })
       .then((data) => data.json())
       .then((movies) => setMovieList(movies))
   }, []);
