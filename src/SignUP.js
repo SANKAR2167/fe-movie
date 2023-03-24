@@ -13,9 +13,9 @@ const movieValidationSchema = yup.object({
     .required()
     .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i),
 })
-export function LoginForm() {
+export function SignUP() {
 
-  const {handleBlur, handleSubmit, values, handleChange,touched,errors} = useFormik({
+  const { handleBlur, handleSubmit, values, handleChange, touched, errors } = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -27,7 +27,7 @@ export function LoginForm() {
   });
   return (
     <form className="login-form" onSubmit={handleSubmit}>
-      <h2 className="header">Login</h2>
+      <h2 className="header">Signup</h2>
       <span className="header">Wlecome to Movie App</span>
       <TextField
         variant="outlined"
@@ -53,9 +53,9 @@ export function LoginForm() {
         onBlur={handleBlur}
       />
       {touched.password && errors.password ? errors.password : null}
-      <Button variant="contained" type="submit">Login</Button>
+      <Button variant="contained" type="submit" color="success">Register</Button>
       <div className="signup-footer">
-        Don't have an account <Link to="/users/signup" className="color" >Register</Link> here.
+        Already have an account <Link to="/users/login" className="color" >Login</Link> here.
       </div>
     </form>
   );

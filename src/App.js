@@ -3,7 +3,7 @@ import { AddMovie } from './AddMovie';
 import './App.css';
 import { MovieList } from './MovieList';
 import { useEffect, useState } from "react";
-import { AppBar, Button, Paper, Toolbar } from '@mui/material';
+import { AppBar, Button, IconButton, Paper, Toolbar } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -13,6 +13,9 @@ import { NotFound } from './NotFound';
 import { LoginForm } from './LoginForm';
 import { EditMovie } from './EditMovie';
 import { API } from './global';
+import { SignUP } from './SignUP';
+import MenuIcon from '@mui/icons-material/Menu';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
 
 // const INITIAL_MOVIE_LIST = [
 //   {
@@ -126,19 +129,35 @@ function App() {
       .then((movies) => setMovieList(movies))
   }, []);
 
+  const [show, setShow] = useState(true)
+
+  const handleShow = () => {
+    setShow(current => !current)
+  }
   return (
     <ThemeProvider theme={darkTheme}>
       <Paper style={{ minHeight: '100vh', borderRadius: '0%' }} elevation={4}>
         <div className="App">
           <AppBar position='fixed'>
-            <Toolbar>
-              <Button color='inherit' onClick={() => navigate(`/login`)}>Login</Button>
-              <Button color='inherit' onClick={() => navigate(`/`)}>Home</Button>
-              <Button color='inherit' onClick={() => navigate(`/movies`)}>Movies</Button>
-              <Button color='inherit' onClick={() => navigate(`/addmovie`)}>Add Movie</Button>
+            <Toolbar className='toolbar'>
+              <IconButton color='inherit' >
+                <LiveTvIcon />
+              </IconButton>
+
+              {show &&
+                <div className="nav-menu">
+                  <Button className='menu' color='inherit' onClick={() => navigate(`/users/login`)}>Login</Button>
+                  <Button className='menu' color='inherit' onClick={() => navigate(`/`)}>Home</Button>
+                  <Button className='menu' color='inherit' onClick={() => navigate(`/movies`)}>Movies</Button>
+                  <Button className='menu' color='inherit' onClick={() => navigate(`/addmovie`)}>Add Movie</Button>
+                </div>
+              }
               <Button color='inherit' sx={{ marginLeft: 'auto' }}
                 startIcon={mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-                onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}></Button>
+                onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>
+              </Button>
+
+              <Button className='toggle' onClick={handleShow}>< MenuIcon /></Button>
             </Toolbar>
           </AppBar>
 
@@ -148,7 +167,8 @@ function App() {
             <Route path='/addmovie' element={<AddMovie movieList={movieList} setMovieList={setMovieList} />} />
             <Route path='/movies/:id' element={<MovieDetail />} />
             <Route path='/movies/edit/:id' element={<EditMovie />} />
-            <Route path='/login' element={<LoginForm />} />
+            <Route path='/users/login' element={<LoginForm />} />
+            <Route path='/users/signup' element={<SignUP />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </div>
@@ -156,6 +176,7 @@ function App() {
     </ThemeProvider>
   );
 }
+
 
 export default App;
 
