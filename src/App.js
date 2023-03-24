@@ -140,7 +140,7 @@ function App() {
         <div className="App">
           <AppBar position='fixed'>
             <Toolbar className='toolbar'>
-              <IconButton color='inherit' >
+              <IconButton color='inherit' onClick={() => navigate(`/`)}>
                 <LiveTvIcon />
               </IconButton>
 
