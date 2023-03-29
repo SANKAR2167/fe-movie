@@ -146,7 +146,7 @@ function App() {
 
               {show &&
                 <div className="nav-menu">
-                  <Button className='menu' color='inherit' onClick={() => navigate(`/users/login`)}>Login</Button>
+                  {/* <Button className='menu' color='inherit' onClick={() => navigate(`/users/login`)}>Login</Button> */}
                   <Button className='menu' color='inherit' onClick={() => navigate(`/`)}>Home</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/movies`)}>Movies</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/addmovie`)}>Add Movie</Button>
@@ -167,8 +167,8 @@ function App() {
             <Route path='/addmovie' element={<AddMovie movieList={movieList} setMovieList={setMovieList} />} />
             <Route path='/movies/:id' element={<MovieDetail />} />
             <Route path='/movies/edit/:id' element={<EditMovie />} />
-            <Route path='/users/login' element={<LoginForm />} />
-            <Route path='/users/signup' element={<SignUP />} />
+            {/* <Route path='/users/login' element={<LoginForm />} />
+            <Route path='/users/signup' element={<SignUP />} /> */}
             <Route path='*' element={<NotFound />} />
           </Routes>
         </div>

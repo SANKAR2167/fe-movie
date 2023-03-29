@@ -1,7 +1,8 @@
 import { Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from 'yup';
+import { API } from "./global";
 
 
 const movieValidationSchema = yup.object({
@@ -22,9 +23,19 @@ export function LoginForm() {
     },
     validationSchema: movieValidationSchema,
     onSubmit: (values) => {
-      console.log("form values:", values);
+      addUser(values);
     }
   });
+
+  const navigate = useNavigate();
+
+  const addUser = (values) => {
+    fetch(`${API}/movies/users/login`, {
+      method: "POST",
+      body: JSON.stringify(values),
+      headers: { "Content-type": "application/json" },
+    }).then(() => navigate('/movies'))
+  };
   return (
     <form className="login-form" onSubmit={handleSubmit}>
       <h2 className="header">Login</h2>
