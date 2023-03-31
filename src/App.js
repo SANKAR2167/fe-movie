@@ -10,10 +10,8 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { MovieDetail } from './MovieDetail';
 import { Home } from './Home';
 import { NotFound } from './NotFound';
-import { LoginForm } from './LoginForm';
 import { EditMovie } from './EditMovie';
 import { API } from './global';
-import { SignUP } from './SignUP';
 import MenuIcon from '@mui/icons-material/Menu';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 

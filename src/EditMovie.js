@@ -50,18 +50,23 @@ function EditFormMovie({ movie }) {
                 summary: movie.summary,
                 trailer: movie.trailer,
             },
-            validationSchema: movieValidationSchema,
-            onSubmit: (updatedMovie) => {
+            // validationSchema: movieValidationSchema,
+            onSubmit: async (updatedMovie) => {
                 console.log("Form values: ", updatedMovie);
-                editMovie(updatedMovie);
+                // await editMovie(updatedMovie);
+                await fetch(`${API}/movies/${movie.id}`, {
+                    method: "PUT",
+                    body: JSON.stringify(updatedMovie),
+                    headers: { "Content-type": "application/json" },
+                }).then(() => navigate("/movies"))
             },
         });
 
     const navigate = useNavigate();
 
-    const editMovie = (updatedMovie) => () => {
+    const editMovie = async (updatedMovie) => () => {
 
-        fetch(`${API}/movies/${movie.id}`, {
+         fetch(`${API}/movies/${movie.id}`, {
             method: "PUT",
             body: JSON.stringify(updatedMovie),
             headers: { "Content-type": "application/json" },
@@ -69,7 +74,7 @@ function EditFormMovie({ movie }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="edit-movie-form">
+        <form className="edit-movie-form">
             <TextField
                 label="Name"
                 variant="outlined"
@@ -132,7 +137,7 @@ function EditFormMovie({ movie }) {
 
             <Button
                 color="success"
-                type="submit"
+                onClick={handleSubmit}
                 variant="contained"
             >
                 Save
