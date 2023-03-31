@@ -50,11 +50,11 @@ function EditFormMovie({ movie }) {
                 summary: movie.summary,
                 trailer: movie.trailer,
             },
-            // validationSchema: movieValidationSchema,
+            validationSchema: movieValidationSchema,
             onSubmit: async (updatedMovie) => {
                 console.log("Form values: ", updatedMovie);
                 // await editMovie(updatedMovie);
-                await fetch(`${API}/movies/${movie.id}`, {
+                await fetch(`${API}/movies/${movie._id}`, {
                     method: "PUT",
                     body: JSON.stringify(updatedMovie),
                     headers: { "Content-type": "application/json" },
@@ -64,14 +64,14 @@ function EditFormMovie({ movie }) {
 
     const navigate = useNavigate();
 
-    const editMovie = async (updatedMovie) => () => {
+    // const editMovie = async (updatedMovie) => () => {
 
-         fetch(`${API}/movies/${movie.id}`, {
-            method: "PUT",
-            body: JSON.stringify(updatedMovie),
-            headers: { "Content-type": "application/json" },
-        }).then(() => navigate("/movies"))
-    };
+    //      fetch(`${API}/movies/${movie.id}`, {
+    //         method: "PUT",
+    //         body: JSON.stringify(updatedMovie),
+    //         headers: { "Content-type": "application/json" },
+    //     }).then(() => navigate("/movies"))
+    // };
 
     return (
         <form className="edit-movie-form">

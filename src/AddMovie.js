@@ -35,8 +35,8 @@ export function AddMovie() {
   // const [summary, setSummary] = useState('');
   // const [trailer, setTrailer] = useState('');
 
-  const addMovie = (newMovie) => {
-    fetch(`${API}/movies`, {
+  const addMovie = async (newMovie) => {
+    await fetch(`${API}/movies`, {
       method: "POST",
       body: JSON.stringify(newMovie),
       headers: { "Content-type": "application/json" },
