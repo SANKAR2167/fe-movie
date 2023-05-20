@@ -1,73 +1,90 @@
-import { Button, TextField } from "@mui/material";
-import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
-import * as yup from 'yup';
-import { API } from "./global";
+import { Button, Card, TextField } from '@mui/material';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import React from 'react'
+import { useNavigate } from 'react-router-dom';
+import { API } from './global';
+import { useFormik } from 'formik';
+import * as yup from "yup";
+import { toast } from 'react-toastify';
 
-
-const movieValidationSchema = yup.object({
-  password: yup.string()
-    .min(8, "make password must be strong")
-    .required("Upper & Lower case needed"),
-  email: yup.string()
-    .min(10, 'example@email.com')
-    .required()
-    .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i),
+const signupValidationSchema = yup.object({
+    username: yup.string().required("Why not fill this User-Name?").min(1),
+    email: yup.string().required("Why not fill this e-mail ID?").min(8),
+    password: yup.string().required("Why not fill this Password?").min(8),
 })
-export function SignUP() {
 
-  const { handleBlur, handleSubmit, values, handleChange, touched, errors } = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: movieValidationSchema,
-    onSubmit: (values) => {
-      addUser(values);
+export default function SignUp() {
+
+    const { handleSubmit, values, handleBlur, handleChange, touched, errors } = useFormik({
+        initialValues: {
+            username: "",
+            email: "",
+            password: "",
+        },
+        validationSchema: signupValidationSchema,
+        onSubmit: (newList) => {
+            // console.log("new member: ", newList)
+            addUser(newList)
+        },
+    })
+    const addUser = (newList) => {
+        fetch(`${API}/users/signup`, {
+            method: "POST",
+            body: JSON.stringify(newList),
+            headers: { "Content-Type": "application/json" }
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                if (data.message === "Username already exists") {
+                    console.log("username already exists");
+                } else {
+                    console.log("login successfull");
+                    toast.success("Registration Successful");
+                    navigate('/users/login')
+                }
+            })
     }
-  });
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const addUser = (values) => {
-    fetch(`${API}/movies/users/signup`, {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: { "Content-type": "application/json" },
-    }).then(() => navigate('/movies'))
-  };
-  return (
-    <form className="login-form" onSubmit={handleSubmit}>
-      <h2 className="header">Signup</h2>
-      <span className="header">Wlecome to Movie App</span>
-      <TextField
-        variant="outlined"
-        id="outlined-basic"
-        label='Username'
-        value={values.email}
-        type="email"
-        placeholder="Email"
-        name="email"
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-      {touched.email && errors.email ? errors.email : null}
-      <TextField
-        variant="outlined"
-        id="outlined-basic"
-        label='Password'
-        value={values.password}
-        type="password"
-        placeholder="Password"
-        name="password"
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-      {touched.password && errors.password ? errors.password : null}
-      <Button variant="contained" type="submit" color="success">Register</Button>
-      <div className="signup-footer">
-        Already have an account <Link to="/users/login" className="color" >Login</Link> here.
-      </div>
-    </form>
-  );
+    return (
+        <form className='login' onSubmit={handleSubmit}>
+            <Card className='login-card' >
+                <h2><VpnKeyIcon /> Sign Up</h2>
+                <div className='login-input'>
+                    <TextField
+                        name="username"
+                        label="User Name"
+                        variant="outlined"
+                        onChange={handleChange}
+                        value={values.username}
+                        onBlur={handleBlur}
+                    />
+                    {touched.username && errors.username ? errors.username : null}
+                    <TextField
+                        name="email"
+                        label="Email"
+                        variant="outlined"
+                        onChange={handleChange}
+                        value={values.email}
+                        onBlur={handleBlur}
+                      />
+                      {touched.email && errors.email ? errors.email : null}
+                    <TextField
+                        name="password"
+                        label="Password"
+                        variant="outlined"
+                        type='password'
+                        onChange={handleChange}
+                        value={values.password}
+                        onBlur={handleBlur}
+                      />
+                      {touched.password && errors.password ? errors.password : null}
+                    <Button variant="contained" type="submit" color='success'>Register<LockOpenIcon /></Button>
+                    <p className='text'>Don't have an account <span onClick={() => navigate(`/users/login`)} className='nav'>Login</span> here</p>
+                </div>
+            </Card>
+        </form>
+    )
 }

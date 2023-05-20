@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { AddMovie } from './AddMovie';
 import './App.css';
 import { MovieList } from './MovieList';
@@ -14,6 +14,8 @@ import { EditMovie } from './EditMovie';
 import { API } from './global';
 import MenuIcon from '@mui/icons-material/Menu';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
+import LoginForm from './LoginForm'; 
+import SignUP from './SignUP'; 
 
 // const INITIAL_MOVIE_LIST = [
 //   {
@@ -144,7 +146,7 @@ function App() {
 
               {show &&
                 <div className="nav-menu">
-                  {/* <Button className='menu' color='inherit' onClick={() => navigate(`/users/login`)}>Login</Button> */}
+                  <Button className='menu' color='inherit' onClick={() => navigate(`/users/login`)}>Login</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/`)}>Home</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/movies`)}>Movies</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/addmovie`)}>Add Movie</Button>
@@ -160,19 +162,27 @@ function App() {
           </AppBar>
 
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/movies' element={<MovieList />} />
-            <Route path='/addmovie' element={<AddMovie movieList={movieList} setMovieList={setMovieList} />} />
-            <Route path='/movies/:id' element={<MovieDetail />} />
-            <Route path='/movies/edit/:id' element={<EditMovie />} />
-            {/* <Route path='/users/login' element={<LoginForm />} />
-            <Route path='/users/signup' element={<SignUP />} /> */}
+            <Route path='/' element={<ProductedRoute><Home/></ProductedRoute>} />
+            <Route path='/movies' element={<ProductedRoute><MovieList /></ProductedRoute>} />
+            <Route path='/addmovie' element={<ProductedRoute><AddMovie movieList={movieList} setMovieList={setMovieList} /></ProductedRoute>} />
+            <Route path='/movies/:id' element={<ProductedRoute><MovieDetail /></ProductedRoute>} />
+            <Route path='/movies/edit/:id' element={<ProductedRoute><EditMovie /></ProductedRoute>} />
+            <Route path='/users/login' element={<LoginForm />} />
+            <Route path='/users/signup' element={<SignUP />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </div>
       </Paper>
     </ThemeProvider>
   );
+}
+
+
+
+function ProductedRoute({ children }) {
+  const isAuth = localStorage.getItem("token");
+  // console.log(isAuth);
+  return isAuth ? children : <Navigate replace to={"/users/login"} />;
 }
 
 

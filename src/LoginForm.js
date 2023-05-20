@@ -1,73 +1,73 @@
-import { Button, TextField } from "@mui/material";
-import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
-import * as yup from 'yup';
-import { API } from "./global";
+import { Button, Card, TextField } from '@mui/material';
+import React from 'react';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import LoginIcon from '@mui/icons-material/Login';
+import { useNavigate } from 'react-router-dom';
+import { API } from './global';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
+
+export default function LoginForm(){
+
+    const navigate = useNavigate();
+
+    React.useEffect(()=>{
+        if(localStorage.getItem("token")) navigate("/")
+    })
+    const { handleChange, values, handleSubmit } = useFormik({
+        initialValues: {
+            username: "",
+            password: "",
+        },
+        onSubmit: async (values) => {
+            // console.log(values);
+
+            const data = await fetch(`${API}/users/login`, {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify(values)
+            })
+
+            if (data.status === 401) {
+                toast.error ("Login Failed");
+                console.log("Login Failed");
+            } else {
+                const result = await data.json();
+                toast.success("Login Success");
+                localStorage.setItem("token",result.token)
+                navigate("/")
+            }
+
+        }
+    })
 
 
-const movieValidationSchema = yup.object({
-  password: yup.string()
-    .min(8, "make password must be strong")
-    .required("Upper & Lower case needed"),
-  email: yup.string()
-    .min(10, 'example@email.com')
-    .required()
-    .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i),
-})
-export function LoginForm() {
+    return (
+        <form className='login' onSubmit={handleSubmit}>
+            <Card className='login-card'>
+                <h2><VpnKeyIcon /> Sign In</h2>
+                <div className='login-input'>
+                    <TextField
+                        name="username"
+                        label="User Name"
+                        variant="outlined"
+                        onChange={handleChange}
+                        value={values.username}
+                    />
 
-  const {handleBlur, handleSubmit, values, handleChange,touched,errors} = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: movieValidationSchema,
-    onSubmit: (values) => {
-      addUser(values);
-    }
-  });
+                    <TextField
+                        name="password"
+                        label="Password"
+                        variant="outlined"
+                        type='password'
+                        onChange={handleChange}
+                        value={values.password}
+                    />
+                    <Button variant="contained" type="submit" color='error'>Login<LoginIcon /></Button>
 
-  const navigate = useNavigate();
-
-  const addUser = (values) => {
-    fetch(`${API}/movies/users/login`, {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: { "Content-type": "application/json" },
-    }).then(() => navigate('/movies'))
-  };
-  return (
-    <form className="login-form" onSubmit={handleSubmit}>
-      <h2 className="header">Login</h2>
-      <span className="header">Wlecome to Movie App</span>
-      <TextField
-        variant="outlined"
-        id="outlined-basic"
-        label='Username'
-        value={values.email}
-        type="email"
-        placeholder="Email"
-        name="email"
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-      {touched.email && errors.email ? errors.email : null}
-      <TextField
-        variant="outlined"
-        id="outlined-basic"
-        label='Password'
-        value={values.password}
-        type="password"
-        placeholder="Password"
-        name="password"
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
-      {touched.password && errors.password ? errors.password : null}
-      <Button variant="contained" type="submit">Login</Button>
-      <div className="signup-footer">
-        Don't have an account <Link to="/users/signup" className="color" >Register</Link> here.
-      </div>
-    </form>
-  );
+                    <p className='text'>Don't have an account <span onClick={() => navigate(`/users/signup`)} className='nav'>Register</span> here</p>
+                </div>
+            </Card>
+        </form>
+    )
 }

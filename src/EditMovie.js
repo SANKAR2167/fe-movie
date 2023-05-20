@@ -31,7 +31,7 @@ export function EditMovie() {
     }, []);
 
 
-    console.log(movie);
+    // console.log(movie);
 
     return <div className="edit-loading">
 
