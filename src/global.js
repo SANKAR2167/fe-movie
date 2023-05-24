@@ -2,4 +2,4 @@
 
 //  export const API = "http://localhost:4000"
 
-export const API = "https://movieapp-backend-dw0z.onrender.com"
+export const API = "https://backend-master-pw71.onrender.com"
