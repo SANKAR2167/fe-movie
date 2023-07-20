@@ -146,7 +146,7 @@ function App() {
 
               {show &&
                 <div className="nav-menu">
-                  <Button className='menu' color='inherit' onClick={() => navigate(`/users/login`)}>Login</Button>
+                  <Button className='menu' color='inherit' onClick={() => navigate(`/mv_users/login`)}>Login</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/`)}>Home</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/movies`)}>Movies</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/addmovie`)}>Add Movie</Button>
@@ -167,8 +167,8 @@ function App() {
             <Route path='/addmovie' element={<ProductedRoute><AddMovie movieList={movieList} setMovieList={setMovieList} /></ProductedRoute>} />
             <Route path='/movies/:id' element={<ProductedRoute><MovieDetail /></ProductedRoute>} />
             <Route path='/movies/edit/:id' element={<ProductedRoute><EditMovie /></ProductedRoute>} />
-            <Route path='/users/login' element={<LoginForm />} />
-            <Route path='/users/signup' element={<SignUP />} />
+            <Route path='/mv_users/login' element={<LoginForm />} />
+            <Route path='/mv_users/signup' element={<SignUP />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </div>
@@ -182,7 +182,7 @@ function App() {
 function ProductedRoute({ children }) {
   const isAuth = localStorage.getItem("token");
   // console.log(isAuth);
-  return isAuth ? children : <Navigate replace to={"/users/login"} />;
+  return isAuth ? children : <Navigate replace to={"/mv_users/login"} />;
 }
 
 

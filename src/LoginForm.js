@@ -22,7 +22,7 @@ export default function LoginForm(){
         onSubmit: async (values) => {
             // console.log(values);
 
-            const data = await fetch(`${API}/users/login`, {
+            const data = await fetch(`${API}/mv_users/login`, {
                 method: "POST",
                 headers: { "content-type": "application/json" },
                 body: JSON.stringify(values)
@@ -65,7 +65,7 @@ export default function LoginForm(){
                     />
                     <Button variant="contained" type="submit" color='error'>Login<LoginIcon /></Button>
 
-                    <p className='text'>Don't have an account <span onClick={() => navigate(`/users/signup`)} className='nav'>Register</span> here</p>
+                    <p className='text'>Don't have an account <span onClick={() => navigate(`/mv_users/signup`)} className='nav'>Register</span> here</p>
                 </div>
             </Card>
         </form>
