@@ -36,6 +36,7 @@ export default function LoginForm(){
                 toast.success("Login Success");
                 localStorage.setItem("token",result.token)
                 navigate("/")
+                window.location.reload();
             }
 
         }

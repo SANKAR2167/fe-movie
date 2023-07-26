@@ -131,6 +131,20 @@ function App() {
 
   const [show, setShow] = useState(true)
 
+  const [hide, setHide] = useState(true)
+
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    setHide(token);
+  },[])
+
+
+  const Logout = ()=> {
+    localStorage.clear();
+    window.location.reload();
+    setHide(false)
+  }
+
   const handleShow = () => {
     setShow(current => !current)
   }
@@ -146,10 +160,11 @@ function App() {
 
               {show &&
                 <div className="nav-menu">
-                  <Button className='menu' color='inherit' onClick={() => navigate(`/mv_users/login`)}>Login</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/`)}>Home</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/movies`)}>Movies</Button>
                   <Button className='menu' color='inherit' onClick={() => navigate(`/addmovie`)}>Add Movie</Button>
+                  {hide ? (<Button className='menu' color='inherit' onClick={Logout}>Logout</Button>) : null}
+                  
                 </div>
               }
               <Button color='inherit' sx={{ marginLeft: 'auto' }}
